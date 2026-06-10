@@ -31,7 +31,7 @@ const TESTIMONIALS = [
     name: "Johny",
     username: "Trillium Foundation",
     body: "Quality leads, impressive website.",
-    img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face",
+    img: "https://i.postimg.cc/ZnpHgfhG/johny.png",
     country: "KL, India",
   },
   {
@@ -52,7 +52,7 @@ const TESTIMONIALS = [
     name: "Richu",
     username: "Portfolio",
     body: "Highly customisable and attractive.",
-    img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+    img: "https://i.postimg.cc/9QbDbysT/ricku.jpg",
     country: "ON, Canada",
   },
   {
