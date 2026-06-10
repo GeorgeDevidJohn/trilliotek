@@ -14,6 +14,15 @@ const PROJECTS = [
     year: "2025",
   },
   {
+    name: "Kalliope Immigrations",
+    tagline: "Canadian Immigration Services",
+    desc: "Expert Canadian immigration consulting services for visas, work permits, study permits, and permanent residency, led by a Regulated Canadian Immigration Consultant (RCIC-IRB).",
+    tags: ["Web Design", "Lead Generation", "Local Business"],
+    url: "https://www.thekalliope.ca/",
+    img: "https://i.postimg.cc/rwB161Qb/Kalliope.png",
+    year: "2024",
+  },
+  {
     name: "St. Thomas Malankara Catholic Church",
     tagline: "Community & faith",
     desc: "A warm, dignified website for a parish community — events, news, gallery and member registration, all easy to manage.",
