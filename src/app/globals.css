@@ -18,6 +18,20 @@
   );
   --font-display: "Bricolage Grotesque", ui-serif, Georgia, serif;
   --font-sans: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+
+  /* shadcn-compatible tokens (TrillioTek light theme) */
+  --background: #f0eef5;
+  --foreground: #0a0a0a;
+  --primary: #8a2be2;
+  --primary-foreground: #f8f7fc;
+  --secondary: #00ffff;
+  --secondary-foreground: #0a0a0a;
+  --muted-foreground: #3d3a4a;
+  --destructive: #ff00ff;
+  --border: rgba(10, 10, 10, 0.1);
+  --card: #f8f7fc;
+  --card-foreground: #0a0a0a;
+  --muted: #e4e0ee;
 }
 
 html {

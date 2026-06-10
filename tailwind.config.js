@@ -16,6 +16,23 @@ module.exports = {
         amber: "#FF00FF",
         cyan: "#00FFFF",
         mist: "#E4E0EE",
+        border: "var(--border)",
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+        primary: {
+          DEFAULT: "var(--primary)",
+          foreground: "var(--primary-foreground)",
+        },
+        secondary: {
+          DEFAULT: "var(--secondary)",
+          foreground: "var(--secondary-foreground)",
+        },
+        muted: {
+          foreground: "var(--muted-foreground)",
+        },
+        destructive: {
+          DEFAULT: "var(--destructive)",
+        },
       },
       backgroundImage: {
         "brand-gradient":
@@ -33,6 +50,14 @@ module.exports = {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
         },
+        "marquee-flow": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(calc(-100% - var(--gap)))" },
+        },
+        "marquee-flow-vertical": {
+          from: { transform: "translateY(0)" },
+          to: { transform: "translateY(calc(-100% - var(--gap)))" },
+        },
         floaty: {
           "0%, 100%": { transform: "translateY(0px)" },
           "50%": { transform: "translateY(-18px)" },
@@ -42,6 +67,9 @@ module.exports = {
         "marquee-sm": "marquee 22s linear infinite",
         marquee: "marquee 32s linear infinite",
         "marquee-lg": "marquee 42s linear infinite",
+        "marquee-flow": "marquee-flow var(--duration) infinite linear",
+        "marquee-flow-vertical":
+          "marquee-flow-vertical var(--duration) linear infinite",
         floaty: "floaty 9s ease-in-out infinite",
       },
     },
