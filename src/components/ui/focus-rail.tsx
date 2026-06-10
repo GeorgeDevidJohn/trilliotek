@@ -51,7 +51,7 @@ export function FocusRail({
   autoPlay = false,
   interval = 4000,
   className,
-  ctaLabel = "Visit live site",
+  ctaLabel = "Live site",
 }: FocusRailProps) {
   const [active, setActive] = React.useState(initialIndex);
   const [isHovering, setIsHovering] = React.useState(false);
@@ -118,7 +118,7 @@ export function FocusRail({
   return (
     <div
       className={cn(
-        "group relative flex h-[520px] w-full flex-col overflow-hidden rounded-3xl border border-mist bg-bone text-ink outline-none select-none sm:h-[600px]",
+        "group relative flex h-[630px] w-full flex-col overflow-hidden rounded-3xl border border-mist bg-bone text-ink outline-none select-none sm:h-[600px]",
         className
       )}
       onMouseEnter={() => setIsHovering(true)}
