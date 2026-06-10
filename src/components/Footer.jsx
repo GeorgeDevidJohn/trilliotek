@@ -1,5 +1,7 @@
 "use client";
 
+import Logo from "./Logo";
+
 const EMAIL = "georgedevid97@gmail.com";
 
 export default function Footer() {
@@ -8,15 +10,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8">
         <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
           <div className="col-span-2 md:col-span-1">
-            <div className="flex items-center gap-2.5">
-              <span className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-ink text-cream">
-                <span className="absolute h-2 w-2 rounded-full bg-amber translate-x-[7px] translate-y-[-7px]" />
-                <span className="font-display text-lg font-bold">T</span>
-              </span>
-              <span className="font-display text-xl font-bold tracking-tight text-ink">
-                Trillio<span className="text-cobalt">Tek</span>
-              </span>
-            </div>
+            <Logo />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-graphite">
               High-performance, AI-friendly websites &amp; web apps. Built to help
               your business scale.

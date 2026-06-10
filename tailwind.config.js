@@ -7,14 +7,19 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        bone: "#F6F3EC",
-        cream: "#FBF9F4",
-        ink: "#16150F",
-        graphite: "#3A382E",
-        cobalt: "#2438FF",
-        electric: "#3A4FF8",
-        amber: "#FF6A2B",
-        mist: "#E9E4D8",
+        bone: "#F0EEF5",
+        cream: "#F8F7FC",
+        ink: "#0A0A0A",
+        graphite: "#3D3A4A",
+        cobalt: "#8A2BE2",
+        electric: "#2E008B",
+        amber: "#FF00FF",
+        cyan: "#00FFFF",
+        mist: "#E4E0EE",
+      },
+      backgroundImage: {
+        "brand-gradient":
+          "linear-gradient(to right, #2e008b, #8a2be2, #ff00ff, #00ffff)",
       },
       fontFamily: {
         display: ["var(--font-display)", "serif"],
@@ -34,7 +39,9 @@ module.exports = {
         },
       },
       animation: {
+        "marquee-sm": "marquee 22s linear infinite",
         marquee: "marquee 32s linear infinite",
+        "marquee-lg": "marquee 42s linear infinite",
         floaty: "floaty 9s ease-in-out infinite",
       },
     },

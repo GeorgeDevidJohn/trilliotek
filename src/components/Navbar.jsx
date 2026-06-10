@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Logo from "./Logo";
 
 const LINKS = [
   { label: "Services", href: "#services" },
@@ -10,20 +11,6 @@ const LINKS = [
   { label: "Process", href: "#process" },
   { label: "Contact", href: "#contact" },
 ];
-
-function Logo() {
-  return (
-    <a href="#top" className="flex items-center gap-2.5 group">
-      <span className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-ink text-cream transition-transform duration-300 group-hover:rotate-[-8deg]">
-        <span className="absolute h-2 w-2 rounded-full bg-amber translate-x-[7px] translate-y-[-7px]" />
-        <span className="font-display text-lg font-bold">T</span>
-      </span>
-      <span className="font-display text-xl font-bold tracking-tight">
-        Trillio<span className="text-cobalt">Tek</span>
-      </span>
-    </a>
-  );
-}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);

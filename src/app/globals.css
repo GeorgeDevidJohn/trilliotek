@@ -3,8 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --bone: #f6f3ec;
-  --ink: #16150f;
+  --bone: #f0eef5;
+  --ink: #0a0a0a;
+  --indigo: #2e008b;
+  --violet: #8a2be2;
+  --magenta: #ff00ff;
+  --cyan: #00ffff;
+  --brand-gradient: linear-gradient(
+    to right,
+    var(--indigo),
+    var(--violet),
+    var(--magenta),
+    var(--cyan)
+  );
   --font-display: "Bricolage Grotesque", ui-serif, Georgia, serif;
   --font-sans: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
 }
@@ -22,8 +33,8 @@ body {
 }
 
 ::selection {
-  background: #2438ff;
-  color: #fbf9f4;
+  background: #8a2be2;
+  color: #f8f7fc;
 }
 
 /* Thin custom scrollbar */
@@ -31,15 +42,15 @@ body {
   width: 11px;
 }
 ::-webkit-scrollbar-track {
-  background: #efeadf;
+  background: #e4e0ee;
 }
 ::-webkit-scrollbar-thumb {
-  background: #c9c2b1;
+  background: #b8b0c8;
   border-radius: 99px;
-  border: 3px solid #efeadf;
+  border: 3px solid #e4e0ee;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #16150f;
+  background: #8a2be2;
 }
 
 @layer utilities {
@@ -68,6 +79,13 @@ body {
   .underline-grow:hover {
     background-size: 100% 1.5px;
   }
+
+  .text-brand-gradient {
+    background-image: var(--brand-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 }
 
 /* Mesh gradient blobs */
@@ -77,4 +95,12 @@ body {
   filter: blur(70px);
   opacity: 0.55;
   pointer-events: none;
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(to right, rgba(138, 43, 226, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(138, 43, 226, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 75%);
 }
