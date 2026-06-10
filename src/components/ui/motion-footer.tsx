@@ -4,6 +4,7 @@ import * as React from "react";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 import { ArrowRight, ArrowUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -242,8 +243,18 @@ export function CinematicHero() {
         ref={wrapperRef}
         className="cinematic-footer-wrapper relative flex min-h-screen w-full flex-col justify-between overflow-hidden bg-bone text-ink"
       >
-        <div className="footer-aurora pointer-events-none absolute left-1/2 top-1/2 z-0 h-[60vh] w-[80vw] -translate-x-1/2 -translate-y-1/2 animate-footer-breathe rounded-[50%] blur-[80px]" />
-        <div className="footer-bg-grid pointer-events-none absolute inset-0 z-0" />
+        <div className="pointer-events-none absolute inset-0 z-0">
+          <Image
+            src="/hero-background.png"
+            alt=""
+            fill
+            priority
+            className="object-cover object-[center_right] sm:object-right"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-bone/95 via-bone/75 to-bone/30 sm:from-bone/90 sm:via-bone/60 sm:to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-bone/80 via-transparent to-bone/40" />
+        </div>
 
         <div
           ref={giantTextRef}
