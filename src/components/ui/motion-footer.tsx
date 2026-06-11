@@ -311,7 +311,7 @@ export function CinematicHero() {
               </MagneticButton>
             </div>
 
-            <div className="mt-2 flex w-full flex-wrap justify-center gap-3 md:gap-6">
+            {/* <div className="mt-2 flex w-full flex-wrap justify-center gap-3 md:gap-6">
               <MagneticButton
                 as="a"
                 href="#services"
@@ -333,11 +333,11 @@ export function CinematicHero() {
               >
                 Contact
               </MagneticButton>
-            </div>
+            </div> */}
           </div>
         </div>
 
-        <div className="relative z-20 flex w-full flex-col items-center justify-between gap-6 border-t border-mist px-6 py-8 md:flex-row md:px-12">
+        {/* <div className="relative z-20 flex w-full flex-col items-center justify-between gap-6 border-t border-mist px-6 py-8 md:flex-row md:px-12">
           <div className="order-2 text-[10px] font-semibold uppercase tracking-widest text-graphite/70 md:order-1 md:text-xs">
             © {new Date().getFullYear()} TrillioTek. All rights reserved.
           </div>
@@ -365,7 +365,7 @@ export function CinematicHero() {
           >
             <ArrowUp className="h-5 w-5 transition-transform duration-300 group-hover:-translate-y-1.5" />
           </MagneticButton>
-        </div>
+        </div> */}
       </section>
     </>
   );
