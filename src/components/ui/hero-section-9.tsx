@@ -145,7 +145,7 @@ const HeroSection = ({
         </motion.div>
 
         <motion.div
-          className="relative mx-auto h-[400px] w-full max-w-lg sm:h-[500px] lg:max-w-none"
+          className="relative mx-auto hidden h-[400px] w-full max-w-lg sm:h-[500px] lg:block lg:max-w-none"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
