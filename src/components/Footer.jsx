@@ -20,9 +20,9 @@ export default function Footer() {
           <div>
             <h4 className="text-xs font-bold uppercase tracking-wider text-graphite/70">Company</h4>
             <ul className="mt-4 space-y-2.5 text-sm text-graphite">
+              <li><a href="#about" className="underline-grow hover:text-ink">About</a></li>
               <li><a href="#services" className="underline-grow hover:text-ink">Services</a></li>
               <li><a href="#work" className="underline-grow hover:text-ink">Work</a></li>
-              <li><a href="#industries" className="underline-grow hover:text-ink">Industries</a></li>
               <li><a href="#process" className="underline-grow hover:text-ink">Process</a></li>
             </ul>
           </div>
@@ -43,7 +43,7 @@ export default function Footer() {
               <li>
                 <a href={`mailto:${EMAIL}`} className="underline-grow hover:text-ink">{EMAIL}</a>
               </li>
-              <li>India &amp; Canada</li>
+              {/* <li>India &amp; Canada</li> */}
             </ul>
           </div>
         </div>
