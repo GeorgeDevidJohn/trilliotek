@@ -256,7 +256,7 @@ export default function Services() {
           </div>
 
           {/* Right — shuffle cards */}
-          <div className="flex w-full justify-center lg:w-1/2 lg:justify-end">
+          <div className="flex w-full items-center justify-center text-left lg:w-1/2 lg:justify-center">
             <div className="relative -ml-[60px] sm:-ml-[100px] lg:-ml-[80px]">
               <ShuffleServiceCards
                 services={SERVICES}

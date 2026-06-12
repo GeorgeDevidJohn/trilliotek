@@ -269,7 +269,7 @@ export function CinematicHero() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cobalt opacity-50" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-cobalt" />
             </span>
-            Available for new projects · India &amp; Canada
+            Available for new projects 
           </p>
 
           <h1

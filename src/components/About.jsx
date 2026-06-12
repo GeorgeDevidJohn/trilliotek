@@ -42,11 +42,8 @@ const ABOUT_DATA = {
       icon: <TrendingUp className="h-5 w-5" />,
     },
   ],
-  images: [
-    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop&q=80",
-  ],
+  image: "/about-team.png",
+  imageAlt: "TrillioTek team collaborating on web solutions",
 };
 
 export default function About() {
@@ -57,7 +54,8 @@ export default function About() {
       subtitle={ABOUT_DATA.subtitle}
       actions={ABOUT_DATA.actions}
       stats={ABOUT_DATA.stats}
-      images={ABOUT_DATA.images}
+      image={ABOUT_DATA.image}
+      imageAlt={ABOUT_DATA.imageAlt}
     />
   );
 }

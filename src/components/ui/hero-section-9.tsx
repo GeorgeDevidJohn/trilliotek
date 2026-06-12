@@ -23,7 +23,8 @@ interface HeroSectionProps {
   subtitle: string;
   actions: ActionProps[];
   stats: StatProps[];
-  images: string[];
+  image: string;
+  imageAlt?: string;
   className?: string;
   id?: string;
 }
@@ -70,7 +71,8 @@ const HeroSection = ({
   subtitle,
   actions,
   stats,
-  images,
+  image,
+  imageAlt = "TrillioTek team collaborating in the studio",
   className,
   id,
 }: HeroSectionProps) => {
@@ -145,63 +147,85 @@ const HeroSection = ({
         </motion.div>
 
         <motion.div
-          className="relative mx-auto hidden h-[400px] w-full max-w-lg sm:h-[500px] lg:block lg:max-w-none"
+          className="relative mx-auto w-full max-w-lg lg:max-w-none"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
         >
-          <motion.div
-            className="absolute -top-4 left-1/4 h-16 w-16 rounded-full bg-cobalt/15"
-            variants={floatingVariants}
-            animate="animate"
-          />
-          <motion.div
-            className="absolute bottom-0 right-1/4 h-12 w-12 rounded-lg bg-cyan/20"
-            variants={floatingVariants}
-            animate="animate"
-            style={{ transitionDelay: "0.5s" }}
-          />
-          <motion.div
-            className="absolute bottom-1/4 left-4 h-6 w-6 rounded-full bg-amber/20"
-            variants={floatingVariants}
-            animate="animate"
-            style={{ transitionDelay: "1s" }}
-          />
+          <div className="relative aspect-square w-full sm:aspect-[4/5] lg:aspect-[5/6]">
+            {/* Ambient glow */}
+            <div className="pointer-events-none absolute -inset-6 rounded-[2.5rem] bg-brand-gradient opacity-20 blur-3xl" />
 
-          <motion.div
-            className="absolute left-1/2 top-0 h-48 w-48 -translate-x-1/2 rounded-2xl border border-mist bg-cream p-2 shadow-[0_24px_50px_-20px_rgba(10,10,10,0.15)] sm:h-64 sm:w-64"
-            style={{ transformOrigin: "bottom center" }}
-            variants={imageVariants}
-          >
-            <img
-              src={images[0]}
-              alt="Team collaboration"
-              className="h-full w-full rounded-xl object-cover"
+            {/* Offset accent frame */}
+            <motion.div
+              className="pointer-events-none absolute -right-3 top-8 hidden h-[88%] w-[88%] rounded-[2rem] border border-cobalt/20 bg-cobalt/5 sm:block lg:-right-5 lg:top-10"
+              variants={imageVariants}
+              style={{ rotate: "4deg" }}
             />
-          </motion.div>
-          <motion.div
-            className="absolute right-0 top-1/3 h-40 w-40 rounded-2xl border border-mist bg-cream p-2 shadow-[0_24px_50px_-20px_rgba(10,10,10,0.15)] sm:h-56 sm:w-56"
-            style={{ transformOrigin: "left center" }}
-            variants={imageVariants}
-          >
-            <img
-              src={images[1]}
-              alt="Web development workspace"
-              className="h-full w-full rounded-xl object-cover"
+
+            {/* Main image card */}
+            <motion.div
+              className="group relative h-full w-full overflow-hidden rounded-[2rem] border border-mist/80 bg-cream p-2 shadow-[0_32px_80px_-32px_rgba(10,10,10,0.28)] sm:rounded-[2.25rem] sm:p-2.5"
+              variants={imageVariants}
+              whileHover={{ rotate: 0, scale: 1.01 }}
+              style={{ rotate: "-2deg" }}
+              transition={{ type: "spring", stiffness: 260, damping: 22 }}
+            >
+              <div className="relative h-full w-full overflow-hidden rounded-[1.5rem] sm:rounded-[1.75rem]">
+                <img
+                  src={image}
+                  alt={imageAlt}
+                  className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/25 via-transparent to-transparent" />
+              </div>
+            </motion.div>
+
+            {/* Floating chips */}
+            <motion.div
+              className="absolute -left-2 top-6 rounded-full border border-mist bg-cream/90 px-4 py-2 text-xs font-semibold text-ink shadow-lg backdrop-blur-sm sm:-left-4 sm:top-8"
+              variants={floatingVariants}
+              animate="animate"
+            >
+              <span className="text-brand-gradient">Est. 2024</span>
+            </motion.div>
+
+            <motion.div
+              className="absolute -bottom-3 right-4 flex items-center gap-2 rounded-2xl border border-mist bg-cream/95 px-4 py-3 shadow-[0_16px_40px_-20px_rgba(10,10,10,0.25)] backdrop-blur-sm sm:-bottom-4 sm:right-6"
+              variants={floatingVariants}
+              animate="animate"
+              style={{ transitionDelay: "0.4s" }}
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-cobalt/10 text-cobalt">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <path
+                    d="M12 2l2.4 7.4H22l-6 4.6 2.3 7L12 16.8 5.7 21l2.3-7-6-4.6h7.6L12 2z"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+              <div>
+                <p className="text-sm font-bold text-ink">20+ clients</p>
+                <p className="text-[11px] text-graphite">Across Globe</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="absolute right-8 top-0 h-14 w-14 rounded-full bg-cobalt/15 sm:h-16 sm:w-16"
+              variants={floatingVariants}
+              animate="animate"
+              style={{ transitionDelay: "0.8s" }}
             />
-          </motion.div>
-          <motion.div
-            className="absolute bottom-0 left-0 h-32 w-32 rounded-2xl border border-mist bg-cream p-2 shadow-[0_24px_50px_-20px_rgba(10,10,10,0.15)] sm:h-48 sm:w-48"
-            style={{ transformOrigin: "top right" }}
-            variants={imageVariants}
-          >
-            <img
-              src={images[2]}
-              alt="Digital business growth"
-              className="h-full w-full rounded-xl object-cover"
+            <motion.div
+              className="absolute bottom-1/3 left-0 h-5 w-5 rounded-full bg-cyan/30"
+              variants={floatingVariants}
+              animate="animate"
+              style={{ transitionDelay: "1.2s" }}
             />
-          </motion.div>
+          </div>
         </motion.div>
       </div>
     </section>
