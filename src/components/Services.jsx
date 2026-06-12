@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Bot,
@@ -11,71 +11,13 @@ import {
   Smartphone,
 } from "lucide-react";
 import Reveal from "./Reveal";
+import { ShuffleServiceCards } from "@/components/ui/testimonial-cards";
 
-const GLASS_STYLES = `
-.liquid-glass {
-  background: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.55) 0%,
-    rgba(255, 255, 255, 0.18) 45%,
-    rgba(248, 247, 252, 0.35) 100%
-  );
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.65);
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.85),
-    inset 0 -1px 2px rgba(138, 43, 226, 0.04),
-    0 20px 50px -24px rgba(10, 10, 10, 0.18);
-}
-
-.liquid-glass-nav {
-  background: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.42) 0%,
-    rgba(255, 255, 255, 0.12) 100%
-  );
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.7),
-    0 8px 24px -16px rgba(10, 10, 10, 0.12);
-}
-
-.liquid-glass-nav-active {
-  background: linear-gradient(
-    145deg,
-    rgba(138, 43, 226, 0.14) 0%,
-    rgba(255, 255, 255, 0.35) 100%
-  );
-  border-color: rgba(138, 43, 226, 0.35);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    0 12px 32px -16px rgba(138, 43, 226, 0.25);
-}
-
-.liquid-glass-shine {
-  background: linear-gradient(
-    105deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.45) 50%,
-    transparent 60%
-  );
-  background-size: 200% 100%;
-  animation: liquid-shine 6s ease-in-out infinite;
-}
-
-@keyframes liquid-shine {
-  0%, 100% { background-position: 200% 0; }
-  50% { background-position: -200% 0; }
-}
-`;
+const ease = [0.22, 1, 0.36, 1];
 
 const SERVICES = [
   {
     id: "website",
-    emoji: "🌐",
     icon: Globe,
     title: "Website Development",
     listLabel: "Services include",
@@ -90,11 +32,12 @@ const SERVICES = [
       "Social media integration",
       "Lead generation contact forms",
     ],
-    accent: "from-cobalt/20 to-cyan/10",
+    accent: "from-cobalt/30 to-cyan/10",
+    image:
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80",
   },
   {
     id: "webapps",
-    emoji: "⚙️",
     icon: Settings,
     title: "Custom Web Applications",
     listLabel: "Features",
@@ -108,11 +51,12 @@ const SERVICES = [
       "Custom business workflows",
       "Secure authentication and access control",
     ],
-    accent: "from-electric/20 to-cobalt/10",
+    accent: "from-electric/30 to-cobalt/10",
+    image:
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80",
   },
   {
     id: "ai",
-    emoji: "🤖",
     icon: Bot,
     title: "AI Solutions & Automation",
     listLabel: "Our AI services include",
@@ -126,11 +70,12 @@ const SERVICES = [
       "Smart data processing",
       "Business process optimization",
     ],
-    accent: "from-amber/15 to-cobalt/10",
+    accent: "from-amber/20 to-cobalt/10",
+    image:
+      "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&auto=format&fit=crop&q=80",
   },
   {
     id: "mobile",
-    emoji: "📱",
     icon: Smartphone,
     title: "Mobile App Development",
     listLabel: "We develop",
@@ -142,11 +87,12 @@ const SERVICES = [
       "Business and service apps",
       "Customer engagement platforms",
     ],
-    accent: "from-cyan/15 to-cobalt/10",
+    accent: "from-cyan/20 to-cobalt/10",
+    image:
+      "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&auto=format&fit=crop&q=80",
   },
   {
     id: "branding",
-    emoji: "🎨",
     icon: Palette,
     title: "Branding & Creative Design",
     listLabel: "Services include",
@@ -158,11 +104,12 @@ const SERVICES = [
       "Marketing graphics",
       "Social media branding",
     ],
-    accent: "from-amber/15 to-cyan/10",
+    accent: "from-amber/20 to-cyan/10",
+    image:
+      "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&auto=format&fit=crop&q=80",
   },
   {
     id: "growth",
-    emoji: "🚀",
     icon: Rocket,
     title: "Digital Growth Solutions",
     listLabel: "We provide",
@@ -174,244 +121,148 @@ const SERVICES = [
       "Digital strategy consulting",
       "Online presence enhancement",
     ],
-    accent: "from-cobalt/20 to-amber/10",
+    accent: "from-cobalt/30 to-amber/10",
+    image:
+      "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop&q=80",
   },
 ];
 
-const ease = [0.22, 1, 0.36, 1];
-
-const listVariants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, x: -16 },
-  show: { opacity: 1, x: 0, transition: { duration: 0.45, ease } },
-};
-
-function ServiceDetail({ service }) {
-  const Icon = service.icon;
-
-  return (
-    <>
-      <div className="flex items-start gap-4">
-        <span
-          className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${service.accent} text-2xl`}
-        >
-          {service.emoji}
-        </span>
-        <div>
-          <h3 className="font-display text-2xl font-bold text-ink sm:text-3xl">
-            {service.title}
-          </h3>
-          <p className="mt-2 max-w-xl text-base leading-relaxed text-graphite">
-            {service.description}
-          </p>
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <p className="text-xs font-bold uppercase tracking-wider text-cobalt">
-          {service.listLabel}
-        </p>
-
-        <motion.ul
-          variants={listVariants}
-          initial="hidden"
-          animate="show"
-          className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2"
-        >
-          {service.items.map((item) => (
-            <motion.li
-              key={item}
-              variants={itemVariants}
-              className="liquid-glass-nav flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-sm text-ink"
-            >
-              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-cobalt" />
-              {item}
-            </motion.li>
-          ))}
-        </motion.ul>
-      </div>
-
-      <div className="mt-8 flex items-center gap-3">
-        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-ink text-cream">
-          <Icon className="h-4 w-4" />
-        </span>
-        <p className="text-sm text-graphite">
-          <span className="font-semibold text-ink">
-            {service.items.length} services
-          </span>{" "}
-          in this category ·{" "}
-          <a href="#contact" className="text-cobalt underline-grow">
-            Request a quote
-          </a>
-        </p>
-      </div>
-    </>
-  );
-}
-
 export default function Services() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const sectionRefs = useRef([]);
-  const isScrollingRef = useRef(false);
+  const [active, setActive] = useState(SERVICES[0]);
+  const ActiveIcon = active.icon;
 
-  const setSectionRef = useCallback((el, index) => {
-    sectionRefs.current[index] = el;
+  const handleActiveChange = useCallback((service) => {
+    setActive(service);
   }, []);
-
-  useEffect(() => {
-    const observers = sectionRefs.current.map((el, index) => {
-      if (!el) return null;
-
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (isScrollingRef.current) return;
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.35) {
-            setActiveIndex(index);
-          }
-        },
-        { rootMargin: "-15% 0px -40% 0px", threshold: [0.35, 0.55] }
-      );
-
-      observer.observe(el);
-      return observer;
-    });
-
-    return () => {
-      observers.forEach((observer, index) => {
-        if (observer && sectionRefs.current[index]) {
-          observer.unobserve(sectionRefs.current[index]);
-        }
-      });
-    };
-  }, []);
-
-  const scrollToService = (index) => {
-    const el = sectionRefs.current[index];
-    if (!el) {
-      setActiveIndex(index);
-      return;
-    }
-
-    isScrollingRef.current = true;
-    setActiveIndex(index);
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
-    window.setTimeout(() => {
-      isScrollingRef.current = false;
-    }, 700);
-  };
-
-  const active = SERVICES[activeIndex];
 
   return (
-    <section id="services" className="relative overflow-hidden py-24 sm:py-32">
-      <style dangerouslySetInnerHTML={{ __html: GLASS_STYLES }} />
-
-      <div className="pointer-events-none absolute -left-32 top-1/4 h-96 w-96 rounded-full bg-cobalt/10 blur-[120px]" />
+    <section
+      id="services"
+      className="relative overflow-hidden bg-ink py-24 text-cream sm:py-32"
+    >
+      <div className="pointer-events-none absolute -left-32 top-1/4 h-96 w-96 rounded-full bg-cobalt/15 blur-[120px]" />
       <div className="pointer-events-none absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-cyan/10 blur-[100px]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
-        <Reveal className="max-w-2xl">
-          <span className="text-xs font-bold uppercase tracking-[0.2em] text-cobalt">
-            What we do
-          </span>
-          <h2 className="mt-4 font-display text-4xl font-extrabold leading-tight tracking-tight text-ink sm:text-5xl">
-            Everything you need to build,{" "}
-            <span className="text-brand-gradient">ship and grow</span> online.
-          </h2>
-          <p className="mt-4 text-lg text-graphite">
-            Scroll or select a service — each capability updates dynamically as
-            you explore.
-          </p>
-        </Reveal>
+        <div className="flex flex-col items-center gap-14 lg:flex-row lg:items-center lg:gap-16">
+          {/* Left — copy + active service detail */}
+          <div className="w-full lg:w-1/2">
+            <Reveal>
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-cobalt">
+                What we do
+              </span>
+              <h2 className="mt-4 font-display text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl">
+                Everything you need to build,{" "}
+                <span className="text-brand-gradient">ship and grow</span>{" "}
+                online.
+              </h2>
+              <p className="mt-4 max-w-xl text-lg text-white/60">
+                Swipe through our core capabilities — each card reveals a
+                service built to scale your business.
+              </p>
+            </Reveal>
 
-        <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,300px)_1fr] lg:gap-12">
-          <nav className="hidden lg:block">
-            <div className="liquid-glass sticky top-28 rounded-3xl p-3">
-              <ul className="space-y-1.5">
-                {SERVICES.map((service, index) => {
-                  const Icon = service.icon;
-                  const isActive = activeIndex === index;
-                  return (
-                    <li key={service.id}>
-                      <button
-                        type="button"
-                        onClick={() => scrollToService(index)}
-                        className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3.5 text-left transition-all duration-300 ${
-                          isActive
-                            ? "liquid-glass-nav-active text-ink"
-                            : "text-graphite hover:bg-white/30 hover:text-ink"
-                        }`}
-                      >
-                        <span
-                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${service.accent} text-lg`}
-                        >
-                          <Icon className="h-4 w-4 text-cobalt" />
-                        </span>
-                        <span className="min-w-0">
-                          <span className="block text-sm font-semibold leading-tight">
-                            {service.title}
-                          </span>
-                          <span className="mt-0.5 block truncate text-xs text-graphite/70">
-                            {service.items.length} capabilities
-                          </span>
-                        </span>
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          </nav>
-
-          <div>
-            <motion.div
-              layout
-              className="liquid-glass relative hidden overflow-hidden rounded-[2rem] p-6 sm:p-8 lg:sticky lg:top-28 lg:block"
-            >
-              <div className="liquid-glass-shine pointer-events-none absolute inset-0 opacity-40" />
-              <div
-                className={`pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gradient-to-br ${active.accent} blur-[60px]`}
-              />
-
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={active.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.45, ease }}
-                  className="relative"
-                >
-                  <ServiceDetail service={active} />
-                </motion.div>
-              </AnimatePresence>
-            </motion.div>
-
-            <div className="space-y-6 lg:hidden">
-              {SERVICES.map((service, index) => (
-                <motion.div
-                  key={service.id}
-                  ref={(el) => setSectionRef(el, index)}
-                  initial={{ opacity: 0, y: 32 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.25 }}
-                  transition={{ duration: 0.6, ease, delay: index * 0.05 }}
-                  className="liquid-glass relative scroll-mt-28 overflow-hidden rounded-[2rem] p-6"
-                >
-                  <div
-                    className={`pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-gradient-to-br ${service.accent} blur-[50px]`}
-                  />
-                  <div className="relative">
-                    <ServiceDetail service={service} />
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active.id}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.4, ease }}
+                className="mt-10 rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm sm:p-8"
+              >
+                <div className="flex items-start gap-4">
+                  <span
+                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${active.accent}`}
+                  >
+                    <ActiveIcon className="h-5 w-5 text-cobalt" />
+                  </span>
+                  <div>
+                    <h3 className="font-display text-2xl font-bold text-white sm:text-3xl">
+                      {active.title}
+                    </h3>
+                    <p className="mt-2 text-base leading-relaxed text-white/60">
+                      {active.description}
+                    </p>
                   </div>
-                </motion.div>
-              ))}
-            </div>
+                </div>
 
+                <div className="mt-6">
+                  <p className="text-xs font-bold uppercase tracking-wider text-cobalt">
+                    {active.listLabel}
+                  </p>
+                  <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    {active.items.map((item) => (
+                      <li
+                        key={item}
+                        className="flex items-center gap-2.5 rounded-lg border border-white/5 bg-white/[0.03] px-3 py-2 text-sm text-white/75"
+                      >
+                        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-cyan" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="mt-6 flex flex-wrap items-center gap-4">
+                  <a
+                    href="#contact"
+                    className="inline-flex items-center gap-2 rounded-full bg-cobalt px-6 py-3 text-sm font-semibold text-cream transition-colors hover:bg-electric"
+                  >
+                    Request a quote
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      aria-hidden
+                    >
+                      <path
+                        d="M5 12h14M13 6l6 6-6 6"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </a>
+                  <span className="text-sm text-white/40">
+                    {active.items.length} capabilities in this category
+                  </span>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            <div className="mt-8 hidden flex-wrap gap-2 lg:flex">
+              {SERVICES.map((service) => {
+                const Icon = service.icon;
+                const isActive = active.id === service.id;
+                return (
+                  <span
+                    key={service.id}
+                    className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                      isActive
+                        ? "border-cobalt/50 bg-cobalt/15 text-white"
+                        : "border-white/10 text-white/40"
+                    }`}
+                  >
+                    <Icon className="h-3 w-3" />
+                    {service.title.split(" ")[0]}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Right — shuffle cards */}
+          <div className="flex w-full justify-center lg:w-1/2 lg:justify-end">
+            <div className="relative -ml-[60px] sm:-ml-[100px] lg:-ml-[80px]">
+              <ShuffleServiceCards
+                services={SERVICES}
+                onActiveChange={handleActiveChange}
+              />
+            </div>
           </div>
         </div>
       </div>
