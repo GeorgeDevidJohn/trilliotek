@@ -153,7 +153,7 @@ const HeroSection = ({
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
         >
-          <div className="relative aspect-square w-full sm:aspect-[4/5] lg:aspect-[5/6]">
+          <div className="relative aspect-[4/3] w-full sm:aspect-[3/2]">
             {/* Ambient glow */}
             <div className="pointer-events-none absolute -inset-6 rounded-[2.5rem] bg-brand-gradient opacity-20 blur-3xl" />
 

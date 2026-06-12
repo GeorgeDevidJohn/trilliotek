@@ -111,11 +111,16 @@ export function ServiceCard({
 
       {isFront && (
         <p className="relative mt-3 text-center text-[11px] text-white/35">
-          Swipe left to explore →
+          Swipe or use the buttons below →
         </p>
       )}
     </motion.div>
   );
+}
+
+export interface ShuffleServiceCardsHandle {
+  next: () => void;
+  prev: () => void;
 }
 
 interface ShuffleServiceCardsProps {
@@ -123,10 +128,10 @@ interface ShuffleServiceCardsProps {
   onActiveChange?: (service: ServiceCardData) => void;
 }
 
-export function ShuffleServiceCards({
-  services,
-  onActiveChange,
-}: ShuffleServiceCardsProps) {
+export const ShuffleServiceCards = React.forwardRef<
+  ShuffleServiceCardsHandle,
+  ShuffleServiceCardsProps
+>(function ShuffleServiceCards({ services, onActiveChange }, ref) {
   const [queue, setQueue] = React.useState(() => services.map((_, i) => i));
   const [positions, setPositions] = React.useState<CardPosition[]>([
     "front",
@@ -141,7 +146,7 @@ export function ShuffleServiceCards({
     onActiveChange?.(activeService);
   }, [activeService, onActiveChange]);
 
-  const handleShuffle = React.useCallback(() => {
+  const handleShuffleNext = React.useCallback(() => {
     setPositions((prev) => {
       const next = [...prev];
       next.unshift(next.pop()!);
@@ -154,6 +159,24 @@ export function ShuffleServiceCards({
     });
   }, []);
 
+  const handleShufflePrev = React.useCallback(() => {
+    setPositions((prev) => {
+      const next = [...prev];
+      next.push(next.shift()!);
+      return next;
+    });
+    setQueue((prev) => {
+      const next = [...prev];
+      next.unshift(next.pop()!);
+      return next;
+    });
+  }, []);
+
+  React.useImperativeHandle(ref, () => ({
+    next: handleShuffleNext,
+    prev: handleShufflePrev,
+  }));
+
   const visibleCount = Math.min(3, services.length);
 
   return (
@@ -164,11 +187,11 @@ export function ShuffleServiceCards({
           <ServiceCard
             key={slot}
             {...service}
-            handleShuffle={handleShuffle}
+            handleShuffle={handleShuffleNext}
             position={positions[slot]}
           />
         );
       })}
     </div>
   );
-}
+});

@@ -1,9 +1,11 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Bot,
+  ChevronLeft,
+  ChevronRight,
   Globe,
   Palette,
   Rocket,
@@ -128,6 +130,7 @@ const SERVICES = [
 ];
 
 export default function Services() {
+  const cardsRef = useRef(null);
   const [active, setActive] = useState(SERVICES[0]);
   const ActiveIcon = active.icon;
 
@@ -138,7 +141,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="relative overflow-hidden bg-ink py-24 text-cream sm:py-32"
+      className="relative overflow-hidden bg-ink py-[60px] text-cream"
     >
       <div className="pointer-events-none absolute -left-32 top-1/4 h-96 w-96 rounded-full bg-cobalt/15 blur-[120px]" />
       <div className="pointer-events-none absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-cyan/10 blur-[100px]" />
@@ -153,13 +156,12 @@ export default function Services() {
                 What we do
               </span>
               <h2 className="mt-4 font-display text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl">
-                Everything you need to build,{" "}
+                Everything to build,{" "}
                 <span className="text-brand-gradient">ship and grow</span>{" "}
                 online.
               </h2>
               <p className="mt-4 max-w-xl text-lg text-white/60">
-                Swipe through our core capabilities — each card reveals a
-                service built to scale your business.
+                Swipe through our core capabilities.
               </p>
             </Reveal>
 
@@ -170,7 +172,7 @@ export default function Services() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.4, ease }}
-                className="mt-10 rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm sm:p-8"
+                className="mt-10 hidden rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm sm:p-8 lg:block"
               >
                 <div className="flex items-start gap-4">
                   <span
@@ -204,64 +206,45 @@ export default function Services() {
                     ))}
                   </ul>
                 </div>
-
-                <div className="mt-6 flex flex-wrap items-center gap-4">
-                  <a
-                    href="#contact"
-                    className="inline-flex items-center gap-2 rounded-full bg-cobalt px-6 py-3 text-sm font-semibold text-cream transition-colors hover:bg-electric"
-                  >
-                    Request a quote
-                    <svg
-                      width="15"
-                      height="15"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      aria-hidden
-                    >
-                      <path
-                        d="M5 12h14M13 6l6 6-6 6"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </a>
-                  <span className="text-sm text-white/40">
-                    {active.items.length} capabilities in this category
-                  </span>
-                </div>
               </motion.div>
             </AnimatePresence>
-
-            <div className="mt-8 hidden flex-wrap gap-2 lg:flex">
-              {SERVICES.map((service) => {
-                const Icon = service.icon;
-                const isActive = active.id === service.id;
-                return (
-                  <span
-                    key={service.id}
-                    className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
-                      isActive
-                        ? "border-cobalt/50 bg-cobalt/15 text-white"
-                        : "border-white/10 text-white/40"
-                    }`}
-                  >
-                    <Icon className="h-3 w-3" />
-                    {service.title.split(" ")[0]}
-                  </span>
-                );
-              })}
-            </div>
           </div>
 
           {/* Right — shuffle cards */}
-          <div className="flex w-full items-center justify-center text-left lg:w-1/2 lg:justify-center">
+          <div className="flex w-full flex-col items-center gap-6 text-left lg:w-1/2">
             <div className="relative -ml-[60px] sm:-ml-[100px] lg:-ml-[80px]">
               <ShuffleServiceCards
+                ref={cardsRef}
                 services={SERVICES}
                 onActiveChange={handleActiveChange}
               />
+            </div>
+
+            <div className="flex items-center gap-3 sm:gap-4">
+              <button
+                type="button"
+                onClick={() => cardsRef.current?.prev()}
+                aria-label="Previous service"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-white/80 backdrop-blur-md transition-colors hover:border-cobalt/40 hover:bg-cobalt/15 hover:text-white sm:px-5"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                <span className="hidden sm:inline">Previous</span>
+              </button>
+
+              <span className="min-w-12 text-center text-xs font-medium tabular-nums text-white/40">
+                {SERVICES.findIndex((s) => s.id === active.id) + 1} /{" "}
+                {SERVICES.length}
+              </span>
+
+              <button
+                type="button"
+                onClick={() => cardsRef.current?.next()}
+                aria-label="Next service"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-white/80 backdrop-blur-md transition-colors hover:border-cobalt/40 hover:bg-cobalt/15 hover:text-white sm:px-5"
+              >
+                <span className="hidden sm:inline">Next</span>
+                <ChevronRight className="h-4 w-4" />
+              </button>
             </div>
           </div>
         </div>
