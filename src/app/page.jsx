@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar";
 import ScrollProgress from "@/components/ScrollProgress";
-import { CinematicHero } from "@/components/ui/motion-footer";
+import ScrollHero from "@/app/components/ScrollHero";
 import Marquee from "@/components/Marquee";
 import About from "@/components/About";
 import Services from "@/components/Services";
@@ -17,7 +17,7 @@ export default function Home() {
       <ScrollProgress />
       <Navbar />
       <main>
-        <CinematicHero />
+        <ScrollHero />
         <Marquee />
         <About />
         <Services />
