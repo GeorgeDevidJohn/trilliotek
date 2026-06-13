@@ -62,10 +62,16 @@ export function ServiceCard({
       }}
       transition={{ duration: 0.35 }}
       className={cn(
-        "absolute left-0 top-0 grid h-[420px] w-[320px] select-none place-content-start overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-6 shadow-[0_24px_64px_-24px_rgba(0,0,0,0.8)] backdrop-blur-md sm:h-[450px] sm:w-[350px]",
+        "absolute left-0 top-0 grid h-[460px] w-[340px] select-none place-content-start overflow-hidden rounded-2xl border border-white/10 p-7 shadow-[0_24px_64px_-24px_rgba(0,0,0,0.8)] sm:h-[500px] sm:w-[380px]",
         isFront && "cursor-grab active:cursor-grabbing"
       )}
     >
+      <div
+        className="pointer-events-none absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${image})` }}
+        aria-hidden
+      />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-ink/85 to-ink/40" />
       <div
         className={cn(
           "pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-gradient-to-br blur-[60px]",
@@ -73,36 +79,30 @@ export function ServiceCard({
         )}
       />
 
-      <div className="relative mx-auto h-28 w-full overflow-hidden rounded-xl border border-white/10">
-        <img
-          src={image}
-          alt=""
-          className="pointer-events-none h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
-        <span className="absolute bottom-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl bg-cobalt/90 text-cream shadow-lg">
-          <Icon className="h-4 w-4" aria-hidden />
+      <div className="relative flex items-start gap-4">
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-cream shadow-lg backdrop-blur-sm">
+          <Icon className="h-6 w-6" aria-hidden />
         </span>
+        <h3 className="font-display text-2xl font-bold leading-tight text-white sm:text-[1.65rem]">
+          {title}
+        </h3>
       </div>
 
-      <h3 className="relative mt-5 font-display text-xl font-bold leading-tight text-white">
-        {title}
-      </h3>
-      <p className="relative mt-2 line-clamp-2 text-sm leading-relaxed text-white/60">
+      <p className="relative mt-4 line-clamp-3 text-base leading-relaxed text-white/85 sm:text-lg">
         {description}
       </p>
 
-      <div className="relative mt-4 flex-1">
-        <p className="text-[10px] font-bold uppercase tracking-wider text-cobalt">
+      <div className="relative mt-5 flex-1">
+        <p className="text-xs font-bold uppercase tracking-wider text-cyan sm:text-sm">
           {listLabel}
         </p>
-        <ul className="mt-2 space-y-1.5">
+        <ul className="mt-3 space-y-2">
           {items.slice(0, 4).map((item) => (
             <li
               key={item}
-              className="flex items-center gap-2 text-xs text-white/70"
+              className="flex items-center gap-2.5 text-sm text-white/90 sm:text-base"
             >
-              <span className="h-1 w-1 shrink-0 rounded-full bg-cyan" />
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-cyan" />
               {item}
             </li>
           ))}
@@ -110,7 +110,7 @@ export function ServiceCard({
       </div>
 
       {isFront && (
-        <p className="relative mt-3 text-center text-[11px] text-white/35">
+        <p className="relative mt-4 text-center text-xs text-white/50 sm:text-sm">
           Swipe or use the buttons below →
         </p>
       )}
@@ -180,7 +180,7 @@ export const ShuffleServiceCards = React.forwardRef<
   const visibleCount = Math.min(3, services.length);
 
   return (
-    <div className="relative mx-auto h-[420px] w-[320px] sm:h-[450px] sm:w-[350px]">
+    <div className="relative mx-auto h-[460px] w-[340px] sm:h-[500px] sm:w-[380px]">
       {Array.from({ length: visibleCount }, (_, slot) => {
         const service = services[queue[slot]];
         return (

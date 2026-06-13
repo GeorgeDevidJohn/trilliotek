@@ -9,7 +9,13 @@ const TIERS = [
     id: 1,
     name: "Starter",
     price: 150,
-    description: "Launch fast with a polished STATIC WEBSITE built to capture leads.",
+    description: (
+      <>
+        Launch fast with a polished{" "}
+        <span className="font-bold text-cream/80">STATIC WEBSITE</span> built to
+        capture leads.
+      </>
+    ),
     features: [
       "5-page SEO-friendly static website",
       "Social media connect",
@@ -20,7 +26,13 @@ const TIERS = [
     id: 2,
     name: "Growth",
     price: 300,
-    description: "Everything in Starter, plus DYNAMIC WEBSITE and an admin panel.",
+    description: (
+      <>
+        Everything in Starter, plus{" "}
+        <span className="font-bold text-cream/80">DYNAMIC WEBSITE</span> and an
+        admin panel.
+      </>
+    ),
     features: [
       "Everything in Tier 1",
       "Dynamic website",
@@ -31,7 +43,14 @@ const TIERS = [
     id: 3,
     name: "Scale",
     price: 2000,
-    description: "Full-stack growth package with AI and MOBILE APP, bundled for value.",
+    description: (
+      <>
+        Full-stack growth package with{" "}
+        <span className="font-bold text-cream/80">AI and MOBILE APP</span>,
+        bundled for value.
+      </>
+    ),
+    priceNote: "Based on requirements.",
     features: [
       "Everything in Tier 2",
       "Advanced dynamic suite",
@@ -108,6 +127,11 @@ export default function Pricing() {
                       {formatCad(tier.price)}
                       <span className="ml-1 text-sm font-medium text-cream/40">CAD</span>
                     </p>
+                    {tier.priceNote && (
+                      <p className="mt-1 text-sm font-medium text-cream/50">
+                        {tier.priceNote}
+                      </p>
+                    )}
 
                     <ul className="mt-6 space-y-3">
                       {tier.features.map((feature) => (
