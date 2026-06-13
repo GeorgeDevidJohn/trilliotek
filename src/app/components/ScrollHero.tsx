@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useScrollProgress } from "@/app/hooks/useScrollProgress";
+import { WormLoader } from "@/components/ui/worm-loader";
 
 const TOTAL_FRAMES = 241;
 
@@ -63,10 +64,10 @@ export default function ScrollHero() {
   const isLoadedRef = useRef(false);
   const rafRef = useRef(0);
 
-  const [loadedCount, setLoadedCount] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const progress = useScrollProgress(sectionRef);
+  const rawProgress = useScrollProgress(sectionRef);
+  const progress = isLoaded ? rawProgress : 0;
   const phase1 = getPhaseStyle(progress, 0.75, 1);
 
   const drawFrame = useCallback((frameIndex: number) => {
@@ -142,7 +143,6 @@ export default function ScrollHero() {
       const handleLoad = () => {
         if (cancelled) return;
         loaded++;
-        setLoadedCount(loaded);
         if (loaded === 1) onFirstLoad();
         if (loaded === TOTAL_FRAMES) {
           isLoadedRef.current = true;
@@ -202,14 +202,12 @@ export default function ScrollHero() {
     };
   }, [scheduleDraw]);
 
-  const loadProgress = loadedCount / TOTAL_FRAMES;
-
   return (
     <section
       ref={sectionRef}
       id="top"
       className="relative"
-      style={{ height: "500vh" }}
+      style={{ height: isLoaded ? "500vh" : "100vh" }}
     >
       <div
         className="sticky top-0 h-screen overflow-hidden"
@@ -286,19 +284,8 @@ export default function ScrollHero() {
         </div>
 
         {!isLoaded && (
-          <div className="absolute inset-x-0 bottom-0 z-[3] px-6 pb-8">
-            <div className="mx-auto max-w-md">
-              <div className="mb-2 flex justify-between text-xs font-medium text-white/60">
-                <span>Loading sequence</span>
-                <span>{Math.round(loadProgress * 100)}%</span>
-              </div>
-              <div className="h-1 overflow-hidden rounded-full bg-white/20">
-                <div
-                  className="h-full rounded-full bg-cobalt transition-[width] duration-150 ease-out"
-                  style={{ width: `${loadProgress * 100}%` }}
-                />
-              </div>
-            </div>
+          <div className="absolute inset-0 z-[10] flex items-center justify-center bg-cream">
+            <WormLoader />
           </div>
         )}
 
