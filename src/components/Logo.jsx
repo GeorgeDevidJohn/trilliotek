@@ -1,10 +1,10 @@
 import Image from "next/image";
 
-export default function Logo({ className = "" }) {
+export default function Logo({ className = "", src = "/logo.png" }) {
   return (
     <a href="#top" className={`inline-block group ${className}`}>
       <Image
-        src="/logo.png"
+        src={src}
         alt="TrillioTek"
         width={200}
         height={48}

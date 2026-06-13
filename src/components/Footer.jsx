@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8">
         <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
           <div className="col-span-2 md:col-span-1">
-            <Logo />
+            <Logo src="/logo-white.png" />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-cream/60">
               High-performance, AI-friendly websites &amp; web apps. Built to help
               your business scale.
