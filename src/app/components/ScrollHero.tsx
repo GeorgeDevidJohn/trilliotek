@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useScrollProgress } from "@/app/hooks/useScrollProgress";
 
-const TOTAL_FRAMES = 198;
+const TOTAL_FRAMES = 241;
 
 const getFramePath = (index: number) => {
   const padded = String(index).padStart(3, "0");
