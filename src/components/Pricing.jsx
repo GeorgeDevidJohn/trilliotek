@@ -63,7 +63,7 @@ const TIERS = [
 function formatCad(amount) {
   return new Intl.NumberFormat("en-CA", {
     style: "currency",
-    currency: "CAD",
+    currency: "USD",
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(amount);
@@ -125,7 +125,7 @@ export default function Pricing() {
                     </p>
                     <p className="mt-5 font-display text-4xl font-extrabold tracking-tight">
                       {formatCad(tier.price)}
-                      <span className="ml-1 text-sm font-medium text-cream/40">CAD</span>
+                      <span className="ml-1 text-sm font-medium text-cream/40">USD</span>
                     </p>
                     {tier.priceNote && (
                       <p className="mt-1 text-sm font-medium text-cream/50">
