@@ -1,24 +1,71 @@
 import "./globals.css";
+import {
+  SEO_KEYWORDS,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/site";
+
+const title =
+  "Best Web Development Company in Canada | AI, Scroll Animation & Digital Marketing";
+
+const ogTitle =
+  "TrillioTek — Website Development, AI & Digital Marketing (Canada & Worldwide)";
 
 export const metadata = {
-  title: "TrillioTek — High-performance, AI-friendly websites",
-  description:
-    "TrillioTek is a web solutions company building fast, scalable, AI-friendly websites and web apps for businesses in India, Canada and beyond.",
-  keywords: [
-    "web development",
-    "Next.js",
-    "AI-friendly websites",
-    "web design",
-    "TrillioTek",
-    "India",
-    "Canada",
-  ],
-  openGraph: {
-    title: "TrillioTek — High-performance, AI-friendly websites",
-    description:
-      "Fast, scalable, AI-friendly websites and web apps. Based in India & Canada.",
-    type: "website",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: title,
+    template: `%s | ${SITE_NAME}`,
   },
+  description: SITE_DESCRIPTION,
+  keywords: SEO_KEYWORDS,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: "technology",
+  alternates: {
+    canonical: SITE_URL,
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_CA",
+    alternateLocale: ["en_US", "en_GB"],
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: ogTitle,
+    description: SITE_DESCRIPTION,
+    images: [
+      {
+        url: "/logo.png",
+        width: 512,
+        height: 512,
+        alt: `${SITE_NAME} — Web development, AI integration and digital marketing`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: ogTitle,
+    description: SITE_DESCRIPTION,
+    images: ["/logo.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  ...(process.env.GOOGLE_SITE_VERIFICATION && {
+    verification: {
+      google: process.env.GOOGLE_SITE_VERIFICATION,
+    },
+  }),
 };
 
 export const viewport = {
