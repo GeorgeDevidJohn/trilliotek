@@ -6,11 +6,30 @@ import { useScrollProgress } from "@/app/hooks/useScrollProgress";
 import { WormLoader } from "@/components/ui/worm-loader";
 
 const TOTAL_FRAMES = 241;
+const CONCURRENT_LOADS = 6;
+const LOOKAHEAD = 24;
 
 const getFramePath = (index: number) => {
   const padded = String(index).padStart(3, "0");
   return `/sequence/ezgif-frame-${padded}.jpg`;
 };
+
+function findDrawableFrame(images: HTMLImageElement[], target: number): number {
+  const img = images[target];
+  if (img?.complete && img.naturalWidth > 0) return target;
+
+  for (let i = target - 1; i >= 0; i--) {
+    const candidate = images[i];
+    if (candidate?.complete && candidate.naturalWidth > 0) return i;
+  }
+
+  for (let i = target + 1; i < TOTAL_FRAMES; i++) {
+    const candidate = images[i];
+    if (candidate?.complete && candidate.naturalWidth > 0) return i;
+  }
+
+  return -1;
+}
 
 function getPhaseStyle(
   progress: number,
@@ -59,6 +78,7 @@ export default function ScrollHero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const imagesRef = useRef<HTMLImageElement[]>([]);
+  const prioritizeFramesRef = useRef<(frame: number) => void>(() => {});
   const frameRef = useRef(0);
   const lastDrawnFrameRef = useRef(-1);
   const isLoadedRef = useRef(false);
@@ -78,8 +98,10 @@ export default function ScrollHero() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const img = images[frameIndex];
-    if (!img?.complete || img.naturalWidth === 0) return;
+    const drawableIndex = findDrawableFrame(images, frameIndex);
+    if (drawableIndex < 0) return;
+
+    const img = images[drawableIndex];
 
     // Use CSS pixel dimensions — ctx is scaled by DPR in resizeCanvas
     const width = canvas.clientWidth;
@@ -126,45 +148,92 @@ export default function ScrollHero() {
   useEffect(() => {
     let cancelled = false;
     const images: HTMLImageElement[] = new Array(TOTAL_FRAMES);
-    let loaded = 0;
+    const loading = new Set<number>();
+    const queue: number[] = [];
+    let activeLoads = 0;
+    let readyFrames = 0;
 
-    const onFirstLoad = () => {
-      if (!cancelled && canvasRef.current) {
+    const markReady = () => {
+      if (cancelled || isLoadedRef.current) return;
+      isLoadedRef.current = true;
+      setIsLoaded(true);
+      lastDrawnFrameRef.current = -1;
+      scheduleDraw();
+    };
+
+    const onFrameReady = (index: number) => {
+      if (cancelled) return;
+      readyFrames++;
+      if (readyFrames === 1) {
         lastDrawnFrameRef.current = -1;
-        drawFrame(0);
+        drawFrame(index);
+        markReady();
+      } else {
+        scheduleDraw();
       }
     };
 
-    for (let i = 0; i < TOTAL_FRAMES; i++) {
-      const img = new Image();
-      img.src = getFramePath(i + 1);
-      images[i] = img;
+    const pumpQueue = () => {
+      while (!cancelled && activeLoads < CONCURRENT_LOADS && queue.length > 0) {
+        const index = queue.shift()!;
+        if (loading.has(index)) continue;
 
-      const handleLoad = () => {
-        if (cancelled) return;
-        loaded++;
-        if (loaded === 1) onFirstLoad();
-        if (loaded === TOTAL_FRAMES) {
-          isLoadedRef.current = true;
-          setIsLoaded(true);
-          lastDrawnFrameRef.current = -1;
-          scheduleDraw();
-        }
-      };
+        loading.add(index);
+        activeLoads++;
 
-      if (img.complete) {
-        handleLoad();
-      } else {
-        img.onload = handleLoad;
-        img.onerror = handleLoad;
+        const img = new Image();
+        images[index] = img;
+        img.decoding = "async";
+
+        const finish = () => {
+          if (cancelled) return;
+          activeLoads--;
+          loading.delete(index);
+          onFrameReady(index);
+          pumpQueue();
+        };
+
+        img.onload = finish;
+        img.onerror = finish;
+        img.src = getFramePath(index + 1);
       }
-    }
+    };
+
+    const enqueue = (index: number) => {
+      if (index < 0 || index >= TOTAL_FRAMES) return;
+      const existing = images[index];
+      if (existing?.complete && existing.naturalWidth > 0) return;
+      if (loading.has(index) || queue.includes(index)) return;
+      queue.push(index);
+      pumpQueue();
+    };
+
+    const enqueueRange = (start: number, end: number) => {
+      for (let i = start; i <= end; i++) enqueue(i);
+    };
+
+    const enqueueRangeAround = (frameIndex: number) => {
+      enqueue(frameIndex);
+      for (let offset = 1; offset <= LOOKAHEAD; offset++) {
+        enqueue(frameIndex + offset);
+        enqueue(frameIndex - offset);
+      }
+    };
+
+    enqueue(0);
+    enqueueRange(1, LOOKAHEAD);
+    enqueue(TOTAL_FRAMES - 1);
+    enqueueRange(LOOKAHEAD + 1, TOTAL_FRAMES - 2);
 
     imagesRef.current = images;
+    prioritizeFramesRef.current = enqueueRangeAround;
 
     return () => {
       cancelled = true;
+      queue.length = 0;
+      prioritizeFramesRef.current = () => {};
       images.forEach((img) => {
+        if (!img) return;
         img.onload = null;
         img.onerror = null;
       });
@@ -190,7 +259,9 @@ export default function ScrollHero() {
 
       const raw = (window.scrollY - sectionTop) / scrollable;
       const clamped = Math.min(1, Math.max(0, raw));
-      frameRef.current = Math.round(clamped * (TOTAL_FRAMES - 1));
+      const newFrame = Math.round(clamped * (TOTAL_FRAMES - 1));
+      frameRef.current = newFrame;
+      prioritizeFramesRef.current(newFrame);
       scheduleDraw();
     };
 
